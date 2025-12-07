@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>QuizManagement</title>
+    <title>QuizAdmin</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -22,6 +22,22 @@
 
         <nav class="navbar-links">
           <%= link_to "Quizzes", quizzes_path, class: "nav-link" %>
+
+          <% if user_signed_in? %>
+            <span class="nav-text">
+              <span class="nav-dot"></span>
+              <span class="nav-email"><%= current_user.email %></span>
+            </span>
+
+            <%= button_to "Logout",
+                  destroy_user_session_path,
+                  method: :delete,
+                  form: { class: "nav-button-form" },
+                  class: "btn btn-outline btn-sm" %>
+          <% else %>
+            <%= link_to "Sign up", new_user_registration_path, class: "btn btn-outline btn-sm" %>
+            <%= link_to "Login", new_user_session_path, class: "btn btn-primary btn-sm" %>
+          <% end %>
         </nav>
       </div>
     </header>
@@ -37,7 +53,7 @@
     </main>
 
     <footer class="footer">
-      <p>© <%= Time.current.year %> Quiz Manager</p>
+      <p>© <%= Time.current.year %> Quiz Manager · Built with Ruby on Rails</p>
     </footer>
   </body>
 </html>

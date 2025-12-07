@@ -1,8 +1,11 @@
-<h1><%= @quiz.title %> – Result</h1>
+<div class="quiz-result">
+  <h1><%= @quiz.title %> – Result</h1>
+  <p class="quiz-result-score">
+    Your score: <strong><%= @score %> / <%= @total %></strong>
+  </p>
 
-<p>Your score: <strong><%= @score %> / <%= @total %></strong></p>
-
-<p style="margin-top: 1rem;">
-  <%= link_to "Back to quizzes", quizzes_path, class: "btn btn-outline" %>
-  <%= link_to "Try again", quiz_path(@quiz), class: "btn btn-primary" %>
-</p>
+  <div class="quiz-actions" style="justify-content:flex-start; margin-top: 1rem;">
+    <%= link_to "Back to quizzes", quizzes_path, class: "btn btn-outline" %>
+    <%= link_to "Try again", quiz_path(@quiz), class: "btn btn-primary" %>
+  </div>
+</div>
