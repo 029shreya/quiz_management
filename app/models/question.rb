@@ -2,7 +2,7 @@ class Question < ApplicationRecord
   belongs_to :quiz
   has_many :options, dependent: :destroy
 
-  enum question_type: { msq:0 true_false: 1, text: 2}
+  enum question_type: { msq:0, true_false: 1, text: 2}
 
   accepts_nested_attributes_for :options, allow_destroy: true
 

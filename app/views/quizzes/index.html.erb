@@ -1,2 +1,31 @@
-<h1>Quizzes#index</h1>
-<p>Find me in app/views/quizzes/index.html.erb</p>
+<div class="quiz-index-header">
+  <h1 class="page-title">Available Quizzes</h1>
+  <p class="page-subtitle">Choose a quiz below to begin your test.</p>
+</div>
+
+<% if @quizzes.present? %>
+  <div class="quiz-grid">
+    <% @quizzes.each do |quiz| %>
+      <div class="quiz-card-item">
+        <h2 class="quiz-title">
+          <%= link_to quiz.title, quiz_path(quiz), class: "quiz-link" %>
+        </h2>
+
+        <% if quiz.description.present? %>
+          <p class="quiz-desc"><%= quiz.description %></p>
+        <% end %>
+
+        <div class="quiz-meta-small">
+          <span><%= quiz.questions.count %> question<%= "s" if quiz.questions.count != 1 %></span>
+        </div>
+
+        <%= link_to "Start Quiz", quiz_path(quiz), class: "btn btn-primary btn-sm quiz-start-btn" %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <p>No quizzes available yet.</p>
+    <p class="empty-hint">Please add quizzes from the admin panel.</p>
+  </div>
+<% end %>

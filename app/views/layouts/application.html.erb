@@ -10,7 +10,34 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="app-body">
+    <header class="navbar">
+      <div class="navbar-inner">
+        <div class="navbar-brand">
+          <%= link_to root_path, class: "navbar-logo" do %>
+            <span class="navbar-logo-icon">Q</span>
+            <span class="navbar-logo-text">Quiz Manager</span>
+          <% end %>
+        </div>
+
+        <nav class="navbar-links">
+          <%= link_to "Quizzes", quizzes_path, class: "nav-link" %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <% flash.each do |key, value| %>
+        <div class="flash flash-<%= key %>"><%= value %></div>
+      <% end %>
+
+      <div class="page-inner">
+        <%= yield %>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>© <%= Time.current.year %> Quiz Manager</p>
+    </footer>
   </body>
 </html>

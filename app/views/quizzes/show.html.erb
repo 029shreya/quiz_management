@@ -1,2 +1,95 @@
-<h1>Quizzes#show</h1>
-<p>Find me in app/views/quizzes/show.html.erb</p>
+<div class="quiz-header-row">
+  <div>
+    <p class="quiz-breadcrumb">
+      <%= link_to "Quizzes", quizzes_path %> · <span>Preview</span>
+    </p>
+
+    <h1 class="page-title"><%= @quiz.title %></h1>
+
+    <% if @quiz.description.present? %>
+      <p class="page-subtitle"><%= @quiz.description %></p>
+    <% end %>
+  </div>
+
+  <div class="quiz-header-meta">
+    <span class="pill pill-soft">
+      <strong><%= @quiz.questions.count %></strong>
+      question<%= @quiz.questions.count == 1 ? "" : "s" %>
+    </span>
+  </div>
+</div>
+
+
+<div class="quiz-card">
+
+  <header class="quiz-card-header">
+    <div class="quiz-card-title">
+      <h2>Take this quiz</h2>
+      <p class="quiz-card-subtitle">
+        Answer all questions below and click <strong>Submit Quiz</strong> to see your results.
+      </p>
+    </div>
+  </header>
+
+  <%= form_with url: submit_quiz_path(@quiz),
+                method: :post,
+                local: true,
+                data: { turbo: false } do %>
+
+    <ol class="question-list">
+
+      <% @quiz.questions.each_with_index do |question, index| %>
+
+        <li class="question-item">
+
+          <div class="question-top">
+            <span class="question-label">Q<%= index + 1 %></span>
+
+            <div class="question-text-container">
+              <p class="question-text-main"><%= question.content %></p>
+            </div>
+          </div>
+
+          <div class="question-body">
+
+            <% if question.msq? %>
+              <% question.options.each do |opt| %>
+                <label class="option-row">
+                  <%= radio_button_tag "answers[#{question.id}]", opt.id, false %>
+                  <span><%= opt.content %></span>
+                </label>
+              <% end %>
+
+            <% elsif question.true_false? %>
+              <label class="option-row">
+                <%= radio_button_tag "answers[#{question.id}]", "true", false %>
+                <span>True</span>
+              </label>
+
+              <label class="option-row">
+                <%= radio_button_tag "answers[#{question.id}]", "false", false %>
+                <span>False</span>
+              </label>
+
+            <% elsif question.text? %>
+              <%= text_field_tag "answers[#{question.id}]",
+                                 nil,
+                                 placeholder: "Type your answer...",
+                                 class: "text-answer" %>
+            <% end %>
+
+          </div>
+        </li>
+
+      <% end %>
+
+    </ol>
+
+    <div class="quiz-actions">
+      <%= link_to "Back to quizzes", quizzes_path, class: "btn btn-outline" %>
+      <%= submit_tag "Submit Quiz", class: "btn btn-primary btn-lg" %>
+    </div>
+
+  <% end %>
+
+</div>
