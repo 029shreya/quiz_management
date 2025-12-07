@@ -3,7 +3,10 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   resources :quizzes, only: [:index, :show] do
-    post :submit, on: :member
+    member do
+       get :play
+       post :submit
+     end
   end
 
   root "quizzes#index"

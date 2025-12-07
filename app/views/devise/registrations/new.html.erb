@@ -1,0 +1,20 @@
+<div class="auth-container">
+  <h2>Sign up</h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true %>
+
+    <%= f.label :password %>
+    <%= f.password_field :password, autocomplete: "new-password" %>
+
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+
+    <%= f.submit "Sign up", class: "btn-primary" %>
+  <% end %>
+
+  <div class="auth-links">
+    <%= link_to "Log in", new_session_path(resource_name) %>
+  </div>
+</div>

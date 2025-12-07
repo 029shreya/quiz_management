@@ -1,0 +1,92 @@
+<div class="quiz-page">
+
+  <div class="quiz-header-row">
+    <div>
+      <p class="quiz-breadcrumb">
+        <%= link_to "Quizzes", quizzes_path %> · <span>Take quiz</span>
+      </p>
+      <h1 class="page-title"><%= @quiz.title %></h1>
+
+      <% if @quiz.description.present? %>
+        <p class="page-subtitle"><%= @quiz.description %></p>
+      <% end %>
+    </div>
+
+    <div class="quiz-header-meta">
+      <span class="pill pill-soft">
+        <strong><%= @quiz.questions.count %></strong>
+        question<%= @quiz.questions.count == 1 ? "" : "s" %>
+      </span>
+    </div>
+  </div>
+
+  <div class="quiz-card quiz-play-card">
+    <header class="quiz-card-header">
+      <div class="quiz-card-title">
+        <h2>Take this quiz</h2>
+        <p class="quiz-card-subtitle">
+          Answer all questions below and click <strong>Submit Quiz</strong> to see your results.
+        </p>
+      </div>
+    </header>
+
+    <%= form_with url: submit_quiz_path(@quiz),
+                  method: :post,
+                  local: true,
+                  data: { turbo: false } do %>
+
+      <ol class="question-list">
+        <% @quiz.questions.each_with_index do |question, index| %>
+          <li class="question-item">
+            <div class="question-top">
+              <div class="question-number">Q<%= index + 1 %></div>
+              <div class="question-text-container">
+                <p class="question-text-main"><%= question.content %></p>
+
+                <% if question.respond_to?(:help_text) && question.help_text.present? %>
+                  <p class="question-help-text"><%= question.help_text %></p>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="question-body">
+              <% if question.msq? %>
+                <% question.options.each do |opt| %>
+                  <label class="option-row">
+                    <%= radio_button_tag "answers[#{question.id}]", opt.id, false, class: "option-input" %>
+                    <span class="option-text"><%= opt.content %></span>
+                  </label>
+                <% end %>
+
+              <% elsif question.true_false? %>
+                <label class="option-row">
+                  <%= radio_button_tag "answers[#{question.id}]", "true", false, class: "option-input" %>
+                  <span class="option-text">True</span>
+                </label>
+                <label class="option-row">
+                  <%= radio_button_tag "answers[#{question.id}]", "false", false, class: "option-input" %>
+                  <span class="option-text">False</span>
+                </label>
+
+              <% elsif question.text? %>
+                <%= text_field_tag "answers[#{question.id}]",
+                                   nil,
+                                   placeholder: "Type your answer...",
+                                   class: "text-answer" %>
+              <% else %>
+                <p class="question-warning">
+                  Question type not configured — please fix in admin.
+                </p>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ol>
+
+      <div class="quiz-actions quiz-play-actions">
+        <%= link_to "Back to preview", quiz_path(@quiz), class: "btn btn-outline" %>
+        <%= submit_tag "Submit Quiz", class: "btn btn-primary btn-lg" %>
+      </div>
+    <% end %>
+  </div>
+</div>

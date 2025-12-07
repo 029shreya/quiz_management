@@ -1,11 +1,82 @@
-<div class="quiz-result">
-  <h1><%= @quiz.title %> – Result</h1>
-  <p class="quiz-result-score">
-    Your score: <strong><%= @score %> / <%= @total %></strong>
-  </p>
+<% percentage = ((@score.to_f / @total) * 100).round %>
 
-  <div class="quiz-actions" style="justify-content:flex-start; margin-top: 1rem;">
+<div class="quiz-header-row">
+  <div>
+    <p class="quiz-breadcrumb">
+      <%= link_to "Quizzes", quizzes_path %> · <span>Result</span>
+    </p>
+
+    <h1 class="page-title"><%= @quiz.title %> – Result</h1>
+    <p class="page-subtitle">
+      You answered <strong><%= @score %></strong> out of <strong><%= @total %></strong> questions correctly.
+    </p>
+  </div>
+</div>
+
+<div class="quiz-card quiz-result-card">
+  <header class="quiz-card-header quiz-result-header">
+    <div class="quiz-card-title">
+      <% if percentage == 100 %>
+        <p class="result-emoji">🏆</p>
+        <h2>Perfect score!</h2>
+        <p class="quiz-card-subtitle">
+          Incredible work — you nailed every question. Keep that momentum going!
+        </p>
+      <% elsif percentage >= 70 %>
+        <p class="result-emoji">✨</p>
+        <h2>Great job!</h2>
+        <p class="quiz-card-subtitle">
+          You’re doing really well. Review the ones you missed and you’ll ace it next time.
+        </p>
+      <% elsif percentage >= 40 %>
+        <p class="result-emoji">💪</p>
+        <h2>Nice effort!</h2>
+        <p class="quiz-card-subtitle">
+          Learning is a journey. Go through the questions again and watch your score improve.
+        </p>
+      <% else %>
+        <p class="result-emoji">🌱</p>
+        <h2>Good start!</h2>
+        <p class="quiz-card-subtitle">
+          Every expert was once a beginner. Try again and you’ll do better each time.
+        </p>
+      <% end %>
+    </div>
+  </header>
+
+  <div class="quiz-result-body">
+    <div class="score-circle">
+      <span class="score-main"><%= @score %></span>
+      <span class="score-total">/ <%= @total %></span>
+      <span class="score-label">Correct</span>
+    </div>
+
+    <div class="score-details">
+      <p class="score-percentage"><%= percentage %>%</p>
+
+      <div class="score-bar">
+        <div class="score-bar-fill" style="width: <%= percentage %>%;"></div>
+      </div>
+
+      <ul class="score-stats">
+        <li>
+          <span class="label">Total questions</span>
+          <span class="value"><%= @total %></span>
+        </li>
+        <li>
+          <span class="label">Correct</span>
+          <span class="value good"><%= @score %></span>
+        </li>
+        <li>
+          <span class="label">Incorrect</span>
+          <span class="value bad"><%= @total - @score %></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quiz-actions" style="justify-content:flex-start; margin-top: 1.5rem;">
     <%= link_to "Back to quizzes", quizzes_path, class: "btn btn-outline" %>
-    <%= link_to "Try again", quiz_path(@quiz), class: "btn btn-primary" %>
+    <%= link_to "Try again", play_quiz_path(@quiz), class: "btn btn-primary", style: "margin-left: 0.5rem;" %>
   </div>
 </div>

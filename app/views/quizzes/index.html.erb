@@ -1,6 +1,14 @@
+<!-- app/views/quizzes/index.html.erb -->
+
 <div class="quiz-index-header">
   <h1 class="page-title">Available Quizzes</h1>
-  <p class="page-subtitle">Choose a quiz below to begin your test.</p>
+  <p class="page-subtitle">
+    <% if user_signed_in? %>
+      Choose a quiz and click “Start Quiz” to begin.
+    <% else %>
+      Please log in to take a quiz. You can still browse what’s available.
+    <% end %>
+  </p>
 </div>
 
 <% if @quizzes.present? %>
@@ -8,6 +16,7 @@
     <% @quizzes.each do |quiz| %>
       <div class="quiz-card-item">
         <h2 class="quiz-title">
+          <!-- 🔹 Preview page -->
           <%= link_to quiz.title, quiz_path(quiz), class: "quiz-link" %>
         </h2>
 
@@ -19,7 +28,16 @@
           <span><%= quiz.questions.count %> question<%= "s" if quiz.questions.count != 1 %></span>
         </div>
 
-        <%= link_to "Start Quiz", quiz_path(quiz), class: "btn btn-primary btn-sm quiz-start-btn" %>
+        <% if user_signed_in? %>
+          <!-- 🔹 Start quiz => goes to questions page -->
+          <%= link_to "Start Quiz",
+                      play_quiz_path(quiz),
+                      class: "btn btn-primary btn-sm quiz-start-btn" %>
+        <% else %>
+          <%= link_to "Login to start",
+                      new_user_session_path,
+                      class: "btn btn-primary btn-sm quiz-start-btn" %>
+        <% end %>
       </div>
     <% end %>
   </div>
