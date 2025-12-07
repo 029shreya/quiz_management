@@ -280,7 +280,7 @@ GEM
       activerecord (>= 7.1)
       activesupport (>= 7.1)
       i18n
-    rdoc (6.16.1)
+    rdoc (6.17.0)
       erb
       psych (>= 4.0.0)
       tsort
@@ -359,7 +359,6 @@ PLATFORMS
   arm-linux-musl
   arm64-darwin
   x86_64-darwin
-  x86_64-linux
   x86_64-linux-gnu
   x86_64-linux-musl
 
@@ -384,7 +383,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.3.0p0
+   ruby 3.1.2p20
 
 BUNDLED WITH
-   2.6.5
+   2.6.9
