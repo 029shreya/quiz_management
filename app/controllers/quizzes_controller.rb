@@ -9,6 +9,7 @@ class QuizzesController < ApplicationController
   end
 
   def play
+    @questions = @quiz.questions.shuffle
   end
 
   def submit

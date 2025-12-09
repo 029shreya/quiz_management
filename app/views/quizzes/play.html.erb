@@ -6,7 +6,9 @@
         <%= link_to "Quizzes", quizzes_path %> · <span>Take quiz</span>
       </p>
       <h1 class="page-title"><%= @quiz.title %></h1>
-
+      <div class="quiz-timer">
+        Time left: <span id="quiz-timer"><%= @quiz.time_limit %></span>
+      </div>
       <% if @quiz.description.present? %>
         <p class="page-subtitle"><%= @quiz.description %></p>
       <% end %>
@@ -33,10 +35,11 @@
     <%= form_with url: submit_quiz_path(@quiz),
                   method: :post,
                   local: true,
-                  data: { turbo: false } do %>
+                  data: { turbo: false },
+                  id: "quiz-form" do %>
 
       <ol class="question-list">
-        <% @quiz.questions.each_with_index do |question, index| %>
+        <% @questions.each_with_index do |question, index| %>
           <li class="question-item">
             <div class="question-top">
               <div class="question-number">Q<%= index + 1 %></div>
@@ -50,6 +53,7 @@
             </div>
 
             <div class="question-body">
+
               <% if question.msq? %>
                 <% question.options.each do |opt| %>
                   <label class="option-row">
@@ -63,6 +67,7 @@
                   <%= radio_button_tag "answers[#{question.id}]", "true", false, class: "option-input" %>
                   <span class="option-text">True</span>
                 </label>
+
                 <label class="option-row">
                   <%= radio_button_tag "answers[#{question.id}]", "false", false, class: "option-input" %>
                   <span class="option-text">False</span>
@@ -73,11 +78,13 @@
                                    nil,
                                    placeholder: "Type your answer...",
                                    class: "text-answer" %>
+
               <% else %>
                 <p class="question-warning">
                   Question type not configured — please fix in admin.
                 </p>
               <% end %>
+
             </div>
           </li>
         <% end %>
@@ -90,3 +97,17 @@
     <% end %>
   </div>
 </div>
+<script>
+  let time = 60;
+  const timerEl = document.getElementById("quiz-timer");
+
+  const countdown = setInterval(() => {
+    time--;
+    timerEl.textContent = time;
+
+    if (time <= 0) {
+      clearInterval(countdown);
+      document.getElementById("quiz-form").submit();
+    }
+  }, 1000);
+</script>

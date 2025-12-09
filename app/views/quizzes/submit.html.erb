@@ -1,3 +1,19 @@
+<% if @time_expired %>
+<div class="quiz-card-quiz-result-card" style="text-align:center: padding: 2rem;">
+  <p class="result-emoji" style="font-size: 3rem;"> </p>
+  <h2 style="margin-top: 1rem;"> Time's up!</h2>
+
+  <p style="margin-top: 0.5rem: font-size: 1.1rem;">
+    your quiz time expired
+  </p>
+
+  <div class="quiz-actions" style="justify-content: center; margin-top: 2rem;">
+    <%= link_to "try again", play_quiz_path(@quiz), class: "btn btn-primary" %>
+        <%= link_to "back to quiz", quizzes_path, class: "btn btn-outline", style: "margin-left: 0.5rem:" %>
+      </div>
+    </div>
+      <% return %>
+      <% end %>
 <% percentage = ((@score.to_f / @total) * 100).round %>
 
 <div class="quiz-header-row">

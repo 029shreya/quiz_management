@@ -8,6 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 AdminUser.create!(email: 'admin2@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+
 puts "Deleting old data..."
 User.destroy_all
 Quiz.destroy_all
@@ -56,6 +57,15 @@ q3 = quiz1.questions.create!(
   correct_answer: "table tennis"
 )
 
+# You can add more questions to QUIZ 1 like this:
+# q4 = quiz1.questions.create!(
+#   content: "Another sports question?",
+#   question_type: "msq",
+#   correct_answer: nil
+# )
+# q4.options.create!(content: "Option A", correct: false)
+# q4.options.create!(content: "Option B", correct: true)
+
 # ============================================
 # QUIZ 2
 # ============================================
@@ -75,18 +85,25 @@ q4.options.create!(content: "Jupiter", correct: false)
 q4.options.create!(content: "Earth", correct: false)
 
 # Q2 True/False
-quiz2.questions.create!(
+q5 = quiz2.questions.create!(
   content: "The sun rises in the west.",
   question_type: "true_false",
   correct_answer: "false"
 )
 
 # Q3 Text
-quiz2.questions.create!(
+q6 = quiz2.questions.create!(
   content: "Who wrote the national anthem of India?",
   question_type: "text",
   correct_answer: "Rabindranath Tagore"
 )
+
+# Add more questions to QUIZ 2 if needed:
+# q7 = quiz2.questions.create!(
+#   content: "Another GK question?",
+#   question_type: "true_false",
+#   correct_answer: "true"
+# )
 
 puts "Seeding complete! 🎉"
 puts "Login using: test@example.com / password"
